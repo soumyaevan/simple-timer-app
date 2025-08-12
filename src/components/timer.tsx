@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import TimerButton from "./TImerButton";
 
 const Timer = () => {
@@ -7,7 +7,7 @@ const Timer = () => {
   const [time, setTime] = useState(0);
   const [isTimeRunning, setIsTimeRunning] = useState(false);
 
-  const formatTime = (seconds) => {
+  const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
