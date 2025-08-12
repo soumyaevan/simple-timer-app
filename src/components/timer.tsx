@@ -6,6 +6,7 @@ const Timer = () => {
   const audioRef = useRef(null);
   const [time, setTime] = useState(0);
   const [isTimeRunning, setIsTimeRunning] = useState(false);
+  const [audioUnlocked, setAudioUnlocked] = useState(false);
 
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60);
@@ -15,16 +16,30 @@ const Timer = () => {
       .padStart(2, "0")}`;
   };
 
+  const unlockAudio = async () => {
+    if (!audioUnlocked && audioRef.current) {
+      try {
+        await audioRef.current.play();
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        setAudioUnlocked(true);
+      } catch (error) {
+        console.log("Audio unlock failed:", error);
+      }
+    }
+  };
+
   const playSound = () => {
-    if (audioRef.current) {
+    if (audioRef.current && audioUnlocked) {
       audioRef.current.currentTime = 0;
-      audioRef.current
-        .play()
-        .catch((e) => console.log("Audio playing failed", e));
+      audioRef.current.play().catch((e) => {
+        console.log("Audio playing failed", e);
+      });
     }
   };
 
   const toggleTimer = () => {
+    unlockAudio();
     if (isTimeRunning) {
       clearInterval(timeRef.current);
       timeRef.current = null;
@@ -53,22 +68,28 @@ const Timer = () => {
   return (
     <>
       <div className="mt-2 mb-4 max-w-md text-center mx-auto">
-        <img src="/SreeSreeThakur.png" />
+        <img src="./SreeSreeThakur.png" />
       </div>
       <div className="max-w-md mx-auto text-center mt-10 bg-zinc-500 p-6 shadow-lg rounded-sm">
         <audio ref={audioRef} preload="auto">
-          <source src="/VanedPurushottamam.mp3" type="audio/mpeg" />
+          <source src="./VanedPurushottamam.mp3" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
         <div className="mb-8 flex justify-center items-center w-full gap-4">
           <TimerButton
             background={"bg-blue-700"}
-            clickFunction={() => setTime(300)}
+            clickFunction={() => {
+              unlockAudio();
+              setTime(300);
+            }}
             buttonText={"5 mins"}
           />
           <TimerButton
             background={"bg-blue-700"}
-            clickFunction={() => setTime(120)}
+            clickFunction={() => {
+              unlockAudio();
+              setTime(120);
+            }}
             buttonText={"2 mins"}
           />
         </div>
