@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600&family=Headland+One&family=Quicksand:wght@300..700&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap");
+@theme {
+  --font-quicksand: "Quicksand", serif;
+}
+@import "tailwindcss";
+body {
+  @apply bg-zinc-600 text-zinc-200;
+  font-family: var(--font-quicksand);
+}
+h1 {
+  @apply text-4xl;
+}
+h2 {
+  @apply text-2xl;
+}
+h3 {
+  @apply text-xl;
+}
